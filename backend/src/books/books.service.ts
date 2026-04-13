@@ -7,14 +7,17 @@ export class BooksService {
   private books: Book[] = [];
   private idCounter = 1;
 
-  create(bookData: Omit<Book, 'id'>) {
-    const newBook: Book = {
-      id: this.idCounter++,
-      ...bookData,
-    };
-    this.books.push(newBook);
-    return newBook;
+create(bookData: Omit<Book, 'id'>) {
+  if (!bookData.title || !bookData.authorId || !bookData.year) {
+    throw new Error('Missing required fields');
   }
+  const newBook: Book = {
+    id: this.idCounter++,
+    ...bookData,
+  };
+  this.books.push(newBook);
+  return newBook;
+}
 
   findAll() {
     return this.books;
