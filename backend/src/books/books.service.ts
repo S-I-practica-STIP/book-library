@@ -1,5 +1,7 @@
-﻿import { Injectable } from '@nestjs/common';
+﻿import { Injectable, NotFoundException } from '@nestjs/common';
 import { Book } from './entities/book.entity';
+import { CreateBookDto } from './dto/create-book.dto';
+import { UpdateBookDto } from './dto/update-book.dto';
 
 @Injectable()
 export class BooksService {
@@ -7,19 +9,36 @@ export class BooksService {
   private books: Book[] = [];
   private idCounter = 1;
 
-create(bookData: Omit<Book, 'id'>) {
-  if (!bookData.title || !bookData.authorId || !bookData.year) {
-    throw new Error('Missing required fields');
+  create(dto: CreateBookDto): Book {
+    const book: Book = { id: this.idCounter++, ...dto };
+    this.books.push(book);
+    return book;
   }
-  const newBook: Book = {
-    id: this.idCounter++,
-    ...bookData,
-  };
-  this.books.push(newBook);
-  return newBook;
-}
 
-  findAll() {
+  findAll(): Book[] {
     return this.books;
+  }
+
+  findOne(id: number): Book {
+    const book = this.books.find(b => b.id === id);
+    if (!book) {
+      throw new NotFoundException(`ERROR: Книгу з id ${id} не знайдено!`);
+    }
+    return book;
+  }
+
+  update(id: number, dto: UpdateBookDto): Book {
+    const book = this.findOne(id);
+    Object.assign(book, dto);
+    return book;
+  }
+
+  remove(id: number): { message: string } {
+    const index = this.books.findIndex(b => b.id === id);
+    if (index === -1) {
+      throw new NotFoundException(`ERROR: Книгу з id ${id} не знайдено!`);
+    }
+    this.books.splice(index, 1);
+    return { message: `COMPLETED: Книгу з id ${id} видалено!` };
   }
 }
