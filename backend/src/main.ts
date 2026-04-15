@@ -4,10 +4,11 @@ import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.enableCors();
   app.useGlobalPipes(new ValidationPipe({
-    whitelist: true,        // white list, its delete file not in DTO
-    forbidNonWhitelisted: true, // back error when have excessivee
-    transform: true,        // convert
+    whitelist: true,
+    forbidNonWhitelisted: true,
+    transform: true,
   }));
   await app.listen(3000);
 }
