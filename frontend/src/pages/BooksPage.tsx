@@ -1,7 +1,8 @@
 ﻿import { useEffect, useState } from 'react';
-import { Container, Typography, Card, CardContent, Grid, CircularProgress, Alert } from '@mui/material';
-import api from '../api/axios';
+import { Container, Typography, Card, CardContent, CardActions, Grid, CircularProgress, Alert, Button, IconButton } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
 import type { Book } from '../types/index';
+import api from '../api/axios';
 
 export default function BooksPage() {
   const [books, setBooks] = useState<Book[]>([]);
@@ -15,6 +16,13 @@ export default function BooksPage() {
       .finally(() => setLoading(false));
   }, []);
 
+  const handleDelete = (id: number) => {
+    if (!window.confirm('Видалити книгу?')) return;
+    api.delete(`/books/${id}`)
+      .then(() => setBooks(books.filter(b => b.id !== id)))
+      .catch(() => alert('Не вдалось видалити книгу'));
+  };
+
   if (loading) return <CircularProgress sx={{ m: 4 }} />;
   if (error) return <Alert severity="error" sx={{ m: 4 }}>{error}</Alert>;
 
@@ -27,12 +35,17 @@ export default function BooksPage() {
         <Grid container spacing={2}>
           {books.map(book => (
             <Grid item xs={12} sm={6} md={4} key={book.id}>
-              <Card>
+              <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
                 <CardContent>
                   <Typography variant="h6">{book.title}</Typography>
                   <Typography color="text.secondary">Рік: {book.year}</Typography>
                   <Typography color="text.secondary">Автор ID: {book.authorId}</Typography>
                 </CardContent>
+                <CardActions>
+                  <IconButton color="error" onClick={() => handleDelete(book.id)}>
+                    <DeleteIcon />
+                  </IconButton>
+                </CardActions>
               </Card>
             </Grid>
           ))}

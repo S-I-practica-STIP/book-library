@@ -4,6 +4,7 @@ import Navbar from './components/Navbar';
 import BooksPage from './pages/BooksPage';
 import AuthorsPage from './pages/AuthorsPage';
 import AddBookPage from './pages/AddBookPage';
+import AuthorPage from './pages/AuthorPage';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
       <Routes>
         <Route path="/" element={<BooksPage />} />
         <Route path="/authors" element={<AuthorsPage />} />
+        <Route path="/authors/:id" element={<AuthorPage />} /> {}
         <Route path="/books/new" element={<AddBookPage />} />
       </Routes>
     </BrowserRouter>
