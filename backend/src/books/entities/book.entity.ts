@@ -3,4 +3,6 @@ export class Book {
   title: string;
   authorId: number;
   year: number;
+  description?: string;
+  url?: string;
 }

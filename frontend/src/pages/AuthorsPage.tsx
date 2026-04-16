@@ -37,7 +37,7 @@ export default function AuthorsPage() {
   }, []);
 
   const handleDelete = (e: React.MouseEvent, id: number) => {
-    e.stopPropagation(); // щоб не відкривалась сторінка автора при кліку на видалення
+    e.stopPropagation();
     if (!window.confirm('Видалити автора?')) return;
     api.delete(`/authors/${id}`)
       .then(() => setAuthors(authors.filter(a => a.id !== id)))
@@ -60,8 +60,7 @@ export default function AuthorsPage() {
   return (
     <Container sx={{ mt: 4 }}>
       <Typography variant="h4" gutterBottom>Автори</Typography>
-
-      {/* Форма додавання */}
+      {}
       <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={{ mb: 4, p: 3, border: '1px solid #e0e0e0', borderRadius: 2, maxWidth: 800, mx: 'auto' }}>
         <Typography variant="h6" gutterBottom sx={{ textAlign: 'center' }}>Додати автора</Typography>
         {success && <Alert severity="success" sx={{ mb: 2 }}>Автора додано!</Alert>}
@@ -100,8 +99,7 @@ export default function AuthorsPage() {
           Додати автора
         </Button>
       </Box>
-
-      {/* Список авторів */}
+      {}
       {authors.length === 0 ? (
         <Alert severity="info">Авторів поки немає.</Alert>
       ) : (

@@ -1,4 +1,4 @@
-import { IsString, IsInt, IsOptional, Min, Max } from 'class-validator';
+﻿import { IsString, IsInt, IsOptional, IsUrl, Min, Max } from 'class-validator';
 
 export class UpdateBookDto {
   @IsString()
@@ -14,4 +14,12 @@ export class UpdateBookDto {
   @Min(1000)
   @Max(new Date().getFullYear())
   year?: number;
+
+  @IsString()
+  @IsOptional()
+  description?: string;
+
+  @IsUrl({}, { message: 'Введіть коректне посилання' })
+  @IsOptional()
+  url?: string;
 }
